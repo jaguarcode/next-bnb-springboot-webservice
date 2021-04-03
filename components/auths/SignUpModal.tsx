@@ -124,7 +124,7 @@ const SignUpModal: React.FC = () => {
 
   return (
     <Container>
-      <CloseXIcon className="modal_colose_x_icon" />
+      <CloseXIcon className="modal-close-x-icon" />
       <div className="input-wrapper">
         <Input
           placeholder="이메일 주소"
