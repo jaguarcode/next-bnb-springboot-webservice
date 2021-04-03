@@ -1,13 +1,15 @@
 import React from "react";
-import styled from "styled-components";
+import { NextPage } from "next";
+import Head from "next/head";
 
-const Container = styled.div`
-  font-size: 21px;
-  color: gray;
-`;
-
-const index: React.FC = () => {
-  return <div />;
+const index: NextPage = () => {
+  return (
+    <>
+      <Head>
+        <title>Next.js & SpringBoot Airbnb Clone</title>
+      </Head>
+    </>
+  );
 };
 
 export default index;

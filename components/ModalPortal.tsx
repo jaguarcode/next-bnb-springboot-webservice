@@ -42,8 +42,8 @@ const ModalPortal: React.FC<IProps> = ({ children, closePortal }) => {
       <Container>
         <div
           className="modal-background"
-          role="presentation"
           onClick={closePortal}
+          role="presentation"
         />
         {children}
       </Container>,

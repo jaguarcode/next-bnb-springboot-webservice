@@ -1,8 +1,19 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+import useValidateMode from "../../hooks/useValidateMode";
 import palette from "../../styles/palette";
 
-const Container = styled.div<{ iconExist: boolean }>`
+type InputContainerProps = {
+  iconExist: boolean;
+  isValid: boolean;
+  useValidation: boolean;
+};
+
+const Container = styled.div<InputContainerProps>`
+  label {
+    display: block;
+    margin-bottom: 8px;
+  }
   input {
     position: relative;
     width: 100%;
@@ -12,37 +23,77 @@ const Container = styled.div<{ iconExist: boolean }>`
     border-radius: 4px;
     font-size: 16px;
     outline: none;
-    ::placeholder {
+    & ::placeholder {
       color: ${palette.gray_76};
     }
     & :focus {
-      border-color: ${palette.dark_cyan} !important;
+      border-color: ${palette.dark_cyan};
     }
   }
-  .input-icon-wrapper {
+  svg {
     position: absolute;
-    top: 0;
     right: 11px;
     height: 46px;
-    display: flex;
-    align-items: center;
   }
+  .input-error-message {
+    margin-top: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    color: ${palette.tawny};
+  }
+  ${({ useValidation, isValid }) =>
+    useValidation &&
+    !isValid &&
+    css`
+      input {
+        background-color: ${palette.snow};
+        border-color: ${palette.orange};
+        & :focus {
+          border-color: ${palette.orange};
+        }
+      }
+    `}
+  ${({ useValidation, isValid }) =>
+    useValidation &&
+    isValid &&
+    css`
+      input {
+        border-color: ${palette.dark_cyan};
+      }
+    `}
 `;
 
-//? <input> 태그가 가지는 속성들에 대한 타입
-//? extends를 사용하여 IProps는 <input> 태그가 가지는 속성을 확장하여 사용하게 됨.
 interface IProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  //? 타입이 JSX 엘리먼트인 icon을 받지 않을 수도, undefined일 수도 있다는 것을 의미
   icon?: JSX.Element;
+  label?: string;
+  isValid?: boolean;
+  useValidation?: boolean;
+  errorMessage?: string;
 }
 
-const Input: React.FC<IProps> = ({ icon, ...props }) => {
+const Input: React.FC<IProps> = ({
+  icon,
+  label,
+  isValid = false,
+  useValidation = true,
+  errorMessage,
+  ...props
+}) => {
+  const { validateMode } = useValidateMode();
   return (
-    <Container iconExist={!!icon}>
+    <Container
+      iconExist={!!icon}
+      isValid={isValid}
+      useValidation={validateMode && useValidation}
+    >
+      {label && <label>{label}</label>}
       <input {...props} />
-      <div className="input-icon-wrapper">{icon}</div>
+      {icon}
+      {useValidation && validateMode && !isValid && errorMessage && (
+        <p className="input-error-message">{errorMessage}</p>
+      )}
     </Container>
   );
 };
 
-export default Input;
+export default React.memo(Input);
