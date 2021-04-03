@@ -61,13 +61,12 @@ const LoginModal: React.FC<IProps> = ({ closeModalPortal }) => {
       alert("이메일과 비밀번호를 입력해 주세요.");
     } else {
       const loginBody = { email, password };
-
       try {
         const { data } = await loginAPI(loginBody);
         dispatch(userActions.setUser(data));
         closeModalPortal();
       } catch (e) {
-        console.log(e);
+        console.log(e.data);
         alert(e.data);
       }
     }

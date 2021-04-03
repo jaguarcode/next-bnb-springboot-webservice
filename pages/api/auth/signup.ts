@@ -54,7 +54,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     const token = jwt.sign(String(newUser.id), process.env.JWT_SECRET);
-    res.setHeader("Set-Cookie", `Access_Token=${token}; Path=/; Expires=${encodeURI(new Date(Date.now() + 60 * 60 * 24 * 1000 * 3))}; HttpOnly`);
+    res.setHeader("Set-Cookie", `access_token=${token}; path=/; expires=${encodeURI(new Date(Date.now() + 60 * 60 * 24 * 1000 * 3))}; httponly`);
 
     const newUserWithoutPassword: Partial<Pick<
       StoredUserType,
