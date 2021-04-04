@@ -11,7 +11,7 @@ const Container = styled.div`
     font-size: 14px;
   }
   h2 {
-    width: 557px;
+    width: 100%;
     margin: 80px 0 60px;
     font-size: 50px;
     color: ${palette.cardinal};
@@ -68,7 +68,7 @@ const Home: React.FC = () => {
         가까운 여행지, 에어비엔비와 탐험해보세요
         <div className="" />
       </h2>
-      {/* <ul className="home-category-card-list">
+      <ul className="home-category-card-list">
         <li>
           <div className="home-category-card-image-wrapper">
             <img
@@ -109,7 +109,7 @@ const Home: React.FC = () => {
             </p>
           </div>
         </li>
-      </ul> */}
+      </ul>
     </Container>
   );
 };

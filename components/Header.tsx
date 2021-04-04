@@ -153,6 +153,7 @@ const Header: React.FC = () => {
         <a className="header-logo-wrapper">
           <AirbnbLogoIcon className="header-logo" />
           <AirbnbLogoText />
+          <h3>Clone</h3>
         </a>
       </Link>
       {!user.isLogged && (
