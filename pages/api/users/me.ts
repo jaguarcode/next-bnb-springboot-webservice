@@ -6,9 +6,8 @@ import Data from "../../../lib/data";
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
     try {
-      const accessToken = req.headers.cookie;
-      if (accessToken) {
-        const userId = jwt.verify(accessToken, process.env.JWT_SECRET!);
+      if (req.headers.cookie) {
+        const userId = jwt.verify(req.headers.cookie, process.env.JWT_SECRET!);
         const user = await Data.user.find({ id: Number(userId) });
         if (user) {
           delete user.password;
@@ -21,7 +20,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       res.statusCode = 400;
       return res.end();
     } catch (e) {
-      console.log(e);
+      //console.log("error occurs");
+      //console.log(e);
       return res.send(e);
     }
   }

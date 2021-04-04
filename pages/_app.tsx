@@ -19,21 +19,25 @@ const app = ({ Component, pageProps }: AppProps) => {
   );
 };
 
-app.getInitialProps = async (context: AppContext) => {
-  const appInitialProps = await App.getInitialProps(context);
-  const cookieObject = cookieStringToObject(context.ctx.req?.headers.cookie);
+app.getInitialProps = async (context) => {
+  const { ctx, Component } = context;
+  let pageProps = {};
   const { store } = context.ctx;
   const { isLogged } = store.getState().user;
+  const cookieObject = cookieStringToObject(context.ctx.req?.headers.cookie);
   try {
     if (!isLogged && cookieObject.access_token) {
       axios.defaults.headers.cookie = cookieObject.access_token;
-      const { data } = await getUser();
+      const { data } = await axios.get("/api/users/me");
       store.dispatch(userActions.setUser(data));
     }
   } catch (e) {
     console.log(e);
   }
-  return { ...appInitialProps };
+  if (Component.getInitialProps) {
+    pageProps = await Component.getInitialProps(ctx);
+  }
+  return { pageProps };
 };
 
 export default wrapper.withRedux(app);
